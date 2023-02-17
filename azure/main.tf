@@ -20,11 +20,13 @@ provider "azurerm" {
 variable "website_name" {
   description = "The name of your static website"
   type        = string   
+  default = "terraform-labs"
 }
 
 variable "location" {
   description = "Azure location this azure StorageAccount should reside in"
   type        = string
+  default = "eastus2"
 }
 
 variable "force_destroy" {
@@ -36,7 +38,9 @@ variable "force_destroy" {
 variable "tags" {
   description = "Tags to add to resources"
   type        = map(string)
-  default     = {}
+  default = {
+    tier = "experimental"
+  }
 }
 
 module "staticwapp" {
