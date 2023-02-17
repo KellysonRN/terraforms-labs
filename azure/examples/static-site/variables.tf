@@ -8,12 +8,12 @@ variable "location" {
   type        = string
 }
 
-variable "force_destroy" {
-  description = "Delete all objects from the StorageAccount so that the SA can be destroyed even when not empty"
-  type        = bool
-}
-
 variable "tags" {
   description = "Tags to add to resources"
   type        = map(string)
+}
+
+variable "rg" {
+  description = "Resources Group"
+  type        = string
 }
