@@ -1,5 +1,5 @@
 resource "azurerm_cosmosdb_account" "cosmos_db" {
-  name                = "cosmosdb-${var.website_name}-exp-${var.location}"
+  name                = "cosmosdb-${var.proof_name}-exp-${var.location}"
   location            = var.location
   resource_group_name = var.rg
   offer_type          = "Standard"
@@ -27,7 +27,7 @@ resource "azurerm_cosmosdb_account" "cosmos_db" {
 }
 
 resource "azurerm_cosmosdb_gremlin_database" "gremlin_db" {
-  name                = "gremlindb-${var.website_name}-exp-${var.location}"
+  name                = "gremlindb-${var.proof_name}-exp-${var.location}"
   resource_group_name = var.rg
   account_name        = azurerm_cosmosdb_account.cosmos_db.name
 }

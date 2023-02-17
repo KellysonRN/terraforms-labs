@@ -1,4 +1,4 @@
-variable "website_name" {
+variable "proof_name" {
   description = "The name od your static website"
   type        = string
 }

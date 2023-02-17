@@ -17,7 +17,7 @@ provider "azurerm" {
 # VARIABLES
 # ---------
 
-variable "website_name" {
+variable "proof_name" {
   description = "The name of your static website"
   type        = string
   default     = "terraform-labs"
@@ -44,7 +44,7 @@ variable "tags" {
 }
 
 resource "azurerm_resource_group" "rg_labs" {
-  name     = "rg-${var.website_name}-exp-${var.location}"
+  name     = "rg-${var.proof_name}-exp-${var.location}"
   location = var.location
   tags     = var.tags
 }
@@ -52,7 +52,7 @@ resource "azurerm_resource_group" "rg_labs" {
 
 module "staticwapp" {
   source        = "./examples/static-site"
-  website_name  = var.website_name
+  proof_name  = var.proof_name
   location      = var.location
   tags          = var.tags
   rg            = azurerm_resource_group.rg_labs.name
@@ -60,7 +60,15 @@ module "staticwapp" {
 
 module "cosmos" {
   source       = "./examples/cosmosdb"
-  website_name = var.website_name
+  proof_name = var.proof_name
+  location     = var.location
+  tags         = var.tags
+  rg            = azurerm_resource_group.rg_labs.name
+}
+
+module "appservice" {
+  source       = "./examples/app-service"
+  proof_name = var.proof_name
   location     = var.location
   tags         = var.tags
   rg            = azurerm_resource_group.rg_labs.name
