@@ -19,14 +19,14 @@ provider "azurerm" {
 
 variable "website_name" {
   description = "The name of your static website"
-  type        = string   
-  default = "terraform-labs"
+  type        = string
+  default     = "terraform-labs"
 }
 
 variable "location" {
   description = "Azure location this azure StorageAccount should reside in"
   type        = string
-  default = "eastus2"
+  default     = "eastus2"
 }
 
 variable "force_destroy" {
@@ -43,10 +43,26 @@ variable "tags" {
   }
 }
 
+resource "azurerm_resource_group" "rg_labs" {
+  name     = "rg-${var.website_name}-exp-${var.location}"
+  location = var.location
+  tags     = var.tags
+}
+
+
 module "staticwapp" {
   source        = "./examples/static-site"
   website_name  = var.website_name
   location      = var.location
-  force_destroy = var.force_destroy
   tags          = var.tags
+  rg            = azurerm_resource_group.rg_labs.name
 }
+
+module "cosmos" {
+  source       = "./examples/cosmosdb"
+  website_name = var.website_name
+  location     = var.location
+  tags         = var.tags
+  rg            = azurerm_resource_group.rg_labs.name
+}
+
