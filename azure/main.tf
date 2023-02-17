@@ -43,34 +43,40 @@ variable "tags" {
   }
 }
 
+resource "random_integer" "ri" {
+  min = 10000
+  max = 99999
+}
+
 resource "azurerm_resource_group" "rg_labs" {
-  name     = "rg-${var.proof_name}-exp-${var.location}"
+  name     = "rg-${var.proof_name}-exp-${random_integer.ri.result}-${var.location}"
   location = var.location
   tags     = var.tags
 }
 
 
 module "staticwapp" {
-  source        = "./examples/static-site"
-  proof_name  = var.proof_name
-  location      = var.location
-  tags          = var.tags
-  rg            = azurerm_resource_group.rg_labs.name
+  source     = "./examples/static-site"
+  proof_name = var.proof_name
+  location   = var.location
+  tags       = var.tags
+  rg         = azurerm_resource_group.rg_labs.name
 }
 
 module "cosmos" {
-  source       = "./examples/cosmosdb"
+  source     = "./examples/cosmosdb"
   proof_name = var.proof_name
-  location     = var.location
-  tags         = var.tags
-  rg            = azurerm_resource_group.rg_labs.name
+  location   = var.location
+  tags       = var.tags
+  rg         = azurerm_resource_group.rg_labs.name
 }
 
 module "appservice" {
-  source       = "./examples/app-service"
+  source     = "./examples/app-service"
   proof_name = var.proof_name
-  location     = var.location
-  tags         = var.tags
-  rg            = azurerm_resource_group.rg_labs.name
+  location   = var.location
+  tags       = var.tags
+  rg         = azurerm_resource_group.rg_labs.name
+  repo       = "code.zip"
 }
 
